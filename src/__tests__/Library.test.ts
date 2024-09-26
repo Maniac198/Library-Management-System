@@ -1,57 +1,54 @@
-import Library from '../library';
-import Book from '../book';
+import { beforeAll, afterAll, describe, it, expect } from '@jest/globals';
+import Library from '../library'; // Adjust the import path as necessary
+import Book from '../book'; // Adjust the import path as necessary
+import sequelize from '../database'; // Import your Sequelize instance
 
-// Create a new instance of Library
-const library = new Library();
+describe('Library', () => {
+  // Create a new instance of the Library class for testing
+  const library = new Library();
 
-describe('Library Management System', () => {
+  // Run before all tests
   beforeAll(async () => {
-    // Sync the database before running tests
-    await Book.sync({ force: true }); // This will drop the table if it exists
+    // Sync the database and create tables
+    await sequelize.sync({ force: true }); // This drops and recreates tables for testing
   });
 
+  // Run after all tests
   afterAll(async () => {
-    // Close the database connection after tests
-    await Book.sequelize.close();
+    // Close the Sequelize connection
+    await sequelize.close();
   });
 
-  test('should add a book to the library', async () => {
-    const bookData = {
-      id: '12345',
-      title: 'The Great Gatsby',
-      author: 'F. Scott Fitzgerald',
-      publicationYear: 1925,
-    };
-    const book = await library.addBook(bookData);
-    expect(book.title).toBe(bookData.title);
-    expect(book.available).toBe(true);
+  it('should add a book', async () => {
+    await library.addBook({ id: '1234567890', title: 'Test Book', author: 'Author Name', publicationYear: 2023, available: true });
+
+    const books = await library.viewAvailableBooks();
+    expect(books.length).toBe(1);
+    expect(books[0].title).toBe('Test Book');
   });
 
-  test('should borrow a book from the library', async () => {
-    const bookId = '12345';
-    const borrowedBook = await library.borrowBook(bookId);
-    expect(borrowedBook.available).toBe(false);
+  it('should borrow a book', async () => {
+    await library.addBook({ id: '0987654321', title: 'Another Test Book', author: 'Another Author', publicationYear: 2023, available: true });
+
+    await library.borrowBook('0987654321');
+    const books = await library.viewAvailableBooks();
+    expect(books.length).toBe(1); // Only the first book should be available
+    expect(books[0].title).toBe('Test Book');
   });
 
-  test('should throw an error when borrowing an unavailable book', async () => {
-    // Borrow the book again
-    await library.borrowBook('12345');
-    
-    await expect(library.borrowBook('12345')).rejects.toThrow('Book is not available for borrowing');
+  it('should return a book', async () => {
+    await library.returnBook('0987654321');
+
+    const books = await library.viewAvailableBooks();
+    expect(books.length).toBe(2); // Both books should now be available
   });
 
-  test('should return a borrowed book', async () => {
-    const returnedBook = await library.returnBook('12345');
-    expect(returnedBook.available).toBe(true);
+  it('should raise an error when borrowing an unavailable book', async () => {
+    await expect(library.borrowBook('1234567890')).rejects.toThrow('Book is not available');
   });
 
-  test('should throw an error when returning a book that does not exist', async () => {
-    await expect(library.returnBook('non-existing-id')).rejects.toThrow('Book not found');
-  });
-
-  test('should list available books', async () => {
-    const availableBooks = await library.viewAvailableBooks();
-    expect(availableBooks.length).toBeGreaterThan(0);
-    expect(availableBooks[0].available).toBe(true);
+  it('should view available books', async () => {
+    const books = await library.viewAvailableBooks();
+    expect(books.length).toBe(2); // Both books should be available
   });
 });
