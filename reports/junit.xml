@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<testsuites name="jest tests" tests="10" failures="0" errors="0" time="3.047">
+  <testsuite name="Library" errors="0" failures="0" skipped="0" timestamp="2024-09-26T16:54:53" time="2.102" tests="5">
+    <testcase classname="Library should add a book" name="Library should add a book" time="0.014">
+    </testcase>
+    <testcase classname="Library should borrow a book" name="Library should borrow a book" time="0.008">
+    </testcase>
+    <testcase classname="Library should return a book" name="Library should return a book" time="0.004">
+    </testcase>
+    <testcase classname="Library should raise an error when borrowing an unavailable book" name="Library should raise an error when borrowing an unavailable book" time="0.006">
+    </testcase>
+    <testcase classname="Library should view available books" name="Library should view available books" time="0.002">
+    </testcase>
+  </testsuite>
+  <testsuite name="Library API" errors="0" failures="0" skipped="0" timestamp="2024-09-26T16:54:53" time="2.295" tests="5">
+    <testcase classname="Library API should add a book" name="Library API should add a book" time="0.04">
+    </testcase>
+    <testcase classname="Library API should borrow a book" name="Library API should borrow a book" time="0.015">
+    </testcase>
+    <testcase classname="Library API should return a book" name="Library API should return a book" time="0.012">
+    </testcase>
+    <testcase classname="Library API should raise an error when borrowing an unavailable book" name="Library API should raise an error when borrowing an unavailable book" time="0.012">
+    </testcase>
+    <testcase classname="Library API should view available books" name="Library API should view available books" time="0.01">
+    </testcase>
+  </testsuite>
+</testsuites>
