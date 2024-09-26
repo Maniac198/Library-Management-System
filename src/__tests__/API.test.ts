@@ -17,7 +17,7 @@ describe('Library API', () => {
   });
 
   it('should add a book', async () => {
-    const response = await request(app)
+    const response = await request(app) // Use app directly instead of server
       .post('/books')
       .send({
         id: '1234567890',
@@ -32,7 +32,7 @@ describe('Library API', () => {
   });
 
   it('should borrow a book', async () => {
-    await request(app)
+    await request(app) // Use app directly instead of server
       .post('/books')
       .send({
         id: '0987654321',
@@ -49,7 +49,7 @@ describe('Library API', () => {
   });
 
   it('should return a book', async () => {
-    await request(app)
+    await request(app) // Use app directly instead of server
       .post('/books')
       .send({
         id: '0987654321',
@@ -66,7 +66,7 @@ describe('Library API', () => {
   });
 
   it('should raise an error when borrowing an unavailable book', async () => {
-    await request(app)
+    await request(app) // Use app directly instead of server
       .post('/books')
       .send({
         id: '0987654321',
@@ -84,7 +84,7 @@ describe('Library API', () => {
   });
 
   it('should view available books', async () => {
-    await request(app)
+    await request(app) // Use app directly instead of server
       .post('/books')
       .send({
         id: '1234567890',
